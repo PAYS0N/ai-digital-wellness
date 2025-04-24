@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.ComponentModel;
 
 namespace AIDigitalWellnessMonitor
 {
@@ -192,11 +193,58 @@ namespace AIDigitalWellnessMonitor
         }
     }
 
-    public class AppUsageInfo
+    public class AppUsageInfo : INotifyPropertyChanged
     {
+        private double _minutesToday;
+        private string _status;
+        private bool _interventionShown;
+
         public string ApplicationName { get; set; }
-        public double MinutesToday { get; set; }
-        public string Status { get; set; }
-        public bool InterventionShown { get; set; }
+
+        public double MinutesToday
+        {
+            get => _minutesToday;
+            set
+            {
+                if (_minutesToday != value)
+                {
+                    _minutesToday = value;
+                    OnPropertyChanged(nameof(MinutesToday));
+                }
+            }
+        }
+
+        public string Status
+        {
+            get => _status;
+            set
+            {
+                if (_status != value)
+                {
+                    _status = value;
+                    OnPropertyChanged(nameof(Status));
+                }
+            }
+        }
+
+        public bool InterventionShown
+        {
+            get => _interventionShown;
+            set
+            {
+                if (_interventionShown != value)
+                {
+                    _interventionShown = value;
+                    OnPropertyChanged(nameof(InterventionShown));
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
